@@ -9,23 +9,24 @@ function App() {
   const [index,setIndex] = useState(0);
 
 
+
+
+
+  useEffect(()=>{
+    const lastlength = userData.length-1;
+    if(index<0){
+      setIndex(lastlength);
+    }
+    if(index>lastlength){
+      setIndex(0);
+    }
+  },[index,userData]);
+
   useEffect(()=>{
     setTimeout(()=>{
       setIndex(index+1)
     },3000)
-  },[index])
-
-
-  useEffect(()=>{
-    if(index<0){
-      setIndex(userData.length-1);
-    }
-    if(index>(userData.length-1)){
-      setIndex(0);
-    }
-  },[index,userData])
-
-
+  },[index]);
 
   return <>
     <section className='section'>
@@ -57,10 +58,10 @@ function App() {
 
             })
           }
-          <button className='prev' onClick={setIndex-1}>
+          <button className='prev' onClick={()=>setIndex(index-1)}>
                <FiChevronLeft/>
           </button>
-          <button className='next' onClick={setIndex+1}>
+          <button className='next' onClick={()=>setIndex(index+1)}>
                <FiChevronRight/>
           </button>
 
