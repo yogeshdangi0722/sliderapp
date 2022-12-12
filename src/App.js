@@ -8,10 +8,24 @@ function App() {
   const [userData,setUserData]=useState(data);
   const [index,setIndex] = useState(0);
 
+
   useEffect(()=>{
-    console.log(data);
-   
-  },[])
+    setTimeout(()=>{
+      setIndex(index+1)
+    },3000)
+  },[index])
+
+
+  useEffect(()=>{
+    if(index<0){
+      setIndex(userData.length-1);
+    }
+    if(index>(userData.length-1)){
+      setIndex(0);
+    }
+  },[index,userData])
+
+
 
   return <>
     <section className='section'>
@@ -23,9 +37,16 @@ function App() {
           <div className='section-center'>
           {
             people.map((person,personIndex)=>{
+              let position = "nextSlide";
               const {id,image,name,title,quote}=person;
+              if(personIndex===index){
+                position="activeSlide";
+              }
+              if(personIndex===index-1 ||(index===0 && personIndex===people.length-1)){
+                position="lastSlide";
+              }
               return(
-                <article key={id}>
+                <article className={position} key={id}>
                 <img src={image} alt={name} className='person-img' />
                 <h4>{name}</h4>
                 <p className='title' >{title}</p>
@@ -36,10 +57,10 @@ function App() {
 
             })
           }
-          <button className='prev'>
+          <button className='prev' onClick={setIndex-1}>
                <FiChevronLeft/>
           </button>
-          <button className='next'>
+          <button className='next' onClick={setIndex+1}>
                <FiChevronRight/>
           </button>
 
